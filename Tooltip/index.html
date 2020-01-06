@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Tooltip</title>
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.3);
+      padding: 16px;
+    }
+
+    .button {
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background: white;
+      color: #303030;
+      outline: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 16px;
+      position: relative;
+    }
+
+    .button:hover {
+      border-color: lightskyblue;
+      color: lightskyblue;
+    }
+
+    .tooltip {
+      position: absolute;
+      /* top: 0;
+      left: 0; */
+      z-index: 10;
+      display: none;
+      background-color: #000;
+      color: #fff;
+      white-space: nowrap;
+      padding: 3px 6px;
+      border-radius: 4px;
+    }
+
+    .tooltip.top {
+      top: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .tooltip.top::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border: 5px solid transparent;
+      border-top-color: #000;
+    }
+
+    .tooltip.bottom {
+      bottom: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .tooltip.bottom::after {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border: 5px solid transparent;
+      border-bottom-color: #000;
+    }
+
+    .tooltip.left {
+      top: 50%;
+      left: -100%;
+      transform: translate(-50%, -50%);
+    }
+
+    .tooltip.left::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border: 5px solid transparent;
+      border-left-color: #000;
+    }
+
+    .tooltip.right {
+      top: 50%;
+      right: -100%;
+      transform: translate(50%, -50%);
+    }
+
+    .tooltip.right::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 100%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border: 5px solid transparent;
+      border-right-color: #000;
+    }
+
+    .tooltip.show {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Tooltip</h2>
+    <button class="button" data-name="tooltip" data-align="top" data-text="我在上面">上</button>
+    <button class="button" data-name="tooltip" data-align="bottom" data-text="我在下面">下</button>
+    <button class="button" data-name="tooltip" data-align="left" data-text="我在左面">左</button>
+    <button class="button" data-name="tooltip" data-align="right" data-text="我在右面">右</button>
+  </div>
+  <script>
+    class Tooltip {
+      constructor($root) {
+        this.$root = $root
+        this.$root.tooltip = this
+        this.align = $root.dataset.align // $root.getAttribute()
+        this.text = $root.dataset.text // $root.getAttribute()
+        this.render()
+        this.setRoot()
+        this.show()
+      }
+      render() {
+        const $tooltip = document.createElement('div')
+        $tooltip.classList.add('tooltip')
+        $tooltip.classList.add(this.align)
+        $tooltip.innerText = this.text
+        this.$tooltip = $tooltip
+        this.$root.appendChild($tooltip)
+      }
+      setRoot() {
+        // 绑定this，防止调用show和hide时this改变报错
+        // 方法1
+        let self = this
+        this.$root.showTooltip = function () {
+          self.show()
+        }
+        // 方法2
+        this.$root.hideTooltip = this.hide.bind(this)
+      }
+      show() {
+        this.$tooltip.classList.add('show')
+      }
+      hide() {
+        this.$tooltip.classList.remove('show')
+      }
+    }
+
+    document.querySelectorAll('[data-name="tooltip"]').forEach($node => {
+      $node.onmouseenter = function () {
+        if ($node.tooltip) {
+          $node.showTooltip()
+        } else {
+          new Tooltip(this)
+        }
+      }
+      $node.onmouseleave = function () {
+        $node.hideTooltip()
+      }
+    })
+  </script>
+</body>
+
+</html>
