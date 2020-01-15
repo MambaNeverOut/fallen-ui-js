@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Carousel</title>
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      border: 1px solid #000;
+      border-radius: 4px;
+      box-shadow: 0 0 4px 0px rgba(0, 0, 0 0.3);
+      padding: 15px;
+    }
+
+    .carousel {
+      position: relative;
+    }
+
+    .carousel .panels>a {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    .carousel .arrows {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(31, 45, 61, .11);
+      border: none;
+      cursor: pointer;
+    }
+
+    .carousel .arrow-pre {
+      left: 10px;
+    }
+
+    .carousel .arrow-next {
+      right: 10px
+    }
+
+    .carousel .indicators {
+      position: absolute;
+      left: 50%;
+      bottom: 10px;
+      transform: translateX(-50%);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .carousel .indicators>li {
+      width: 16px;
+      height: 3px;
+      background: #c0c4cc;
+      display: inline-block;
+    }
+
+    .carousel .indicators>li.active {
+      background: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Carousel</h2>
+    <div class="carousel">
+      <div class="panels">
+        <a href="#1">1</a>
+        <a href="#2">2</a>
+        <a href="#3">3</a>
+        <a href="#4">4</a>
+      </div>
+      <div class="arrows">
+        <button class="arrow arrow-pre"></button>
+        <button class="arrow arrow-next"></button>
+      </div>
+      <ul class="indicators">
+        <li class="active"></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <script>
+
+  </script>
+</body>
+
+</html>
