@@ -156,62 +156,48 @@
   </div>
 
   <script>
+    const $ = s => document.querySelector(s)
+    const $$ = s => document.querySelectorAll(s)
 
-    class Carousel {
-      constructor($root) {
-        this.$root = $root
-        this.$pre = $root.querySelector('.arrow-pre')
-        this.$next = $root.querySelector('.arrow-next')
-        this.$$indicators = $root.querySelectorAll('.indicators > li')
-        this.$$panels = $root.querySelectorAll('.panels > a')
-        this.bind()
-      }
-      bind() {
-        let self = this
-        this.$pre.onclick = function () {
-          let index = self.getPreIndex()
-          self.setPage(index)
-          self.setIndicators(index)
-        }
-        this.$next.onclick = function () {
-          let index = self.getNextIndex()
-          self.setPage(index)
-          self.setIndicators(index)
-        }
-        this.$$indicators.forEach($indicator => {
-          $indicator.onclick = function (e) {
-            let index = [...self.$$indicators].indexOf(e.target)
-            self.setIndicators(index)
-            self.setPage(index)
-          }
-        })
-      }
-      getIndex() {
-        const $active = this.$root.querySelector('.indicators .active');
-        return [...this.$$indicators].indexOf($active)
-      }
-      getPreIndex() {
-        let index = this.getIndex()
-        return (index - 1 + this.$$indicators.length) % this.$$indicators.length
-      }
-      getNextIndex() {
-        let index = this.getIndex()
-        return (index + 1) % this.$$indicators.length
-      }
-      setPage(index) {
-        this.$$panels.forEach($panel => {
-          $panel.classList.remove('active')
-          this.$$panels[index].classList.add('active')
-        })
-      }
-      setIndicators(index) {
-        this.$$indicators.forEach($indicator => {
-          $indicator.classList.remove('active')
-          this.$$indicators[index].classList.add('active')
-        })
-      }
+    const $pre = $('.carousel .arrow-pre')
+    const $next = $('.carousel .arrow-next')
+    const $$indicators = $$('.carousel .indicators>li')
+    const $$panels = $$('.carousel .panels > a')
+    const getIndex = () => [...$$indicators].indexOf($('.carousel .indicators .active'))
+    const getPreIndex = () => (getIndex() - 1 + $$indicators.length) % $$indicators.length
+    const getNextIndex = () => (getIndex() + 1) % $$indicators.length
+
+    const setPage = index => {
+      $$panels.forEach($panel => {
+        $panel.classList.remove('active')
+        $$panels[index].classList.add('active')
+      })
     }
-    let carousel = new Carousel(document.querySelector('.carousel'))
+
+    const setIndicators = index => {
+      $$indicators.forEach($indicator => {
+        $indicator.classList.remove('active')
+        $$indicators[index].classList.add('active')
+      })
+    }
+
+    $pre.onclick = function () {
+      let index = getPreIndex()
+      setPage(index)
+      setIndicators(index)
+    }
+    $next.onclick = function () {
+      let index = getNextIndex()
+      setPage(index)
+      setIndicators(index)
+    }
+    $$indicators.forEach($indicator =>
+      $indicator.onclick = function (e) {
+        let index = [...$$indicators].indexOf(e.target);
+        setIndicators(index)
+        setPage(index)
+      })
+
   </script>
 </body>
 
